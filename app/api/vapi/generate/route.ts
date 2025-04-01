@@ -31,7 +31,7 @@ export async function POST(request: Request){
         const interview = {
             role , type , level , 
             techstack: techstack.split(','),
-            question:JSON.parse(questions),
+            questions:JSON.parse(questions),
             userId:userid,
             finalized:true,
             coverImage:getRandomInterviewCover(),
