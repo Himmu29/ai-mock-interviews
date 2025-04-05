@@ -5,95 +5,87 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-success-100: #49de50;
-  --color-success-200: #42c748;
-  --color-destructive-100: #f75353;
-  --color-destructive-200: #c44141;
-
-  --color-primary-100: #dddfff;
-  --color-primary-200: #cac5fe;
-
-  --color-light-100: #d6e0ff;
-  --color-light-400: #6870a6;
-  --color-light-600: #4f557d;
-  --color-light-800: #24273a;
-
-  --color-dark-100: #020408;
-  --color-dark-200: #27282f;
-  --color-dark-300: #242633;
-
+  /* New Color Palette */
+  --color-primary-100: #e0e7ff;  /* Light indigo */
+  --color-primary-200: #a5b4fc;  /* Medium indigo */
+  --color-primary-300: #6366f1;  /* Vibrant indigo */
+  
+  --color-success-100: #d1fae5;  /* Light emerald */
+  --color-success-200: #6ee7b7;  /* Medium emerald */
+  
+  --color-destructive-100: #fee2e2; /* Light rose */
+  --color-destructive-200: #f87171; /* Medium rose */
+  
+  --color-warning-100: #fef3c7;    /* Light amber */
+  --color-warning-200: #f59e0b;    /* Medium amber */
+  
+  --color-light-100: #f8fafc;      /* Snow white */
+  --color-light-200: #f1f5f9;      /* Light slate */
+  --color-light-400: #94a3b8;      /* Medium slate */
+  --color-light-600: #475569;      /* Dark slate */
+  --color-light-800: #1e293b;      /* Deep slate */
+  
+  --color-dark-100: #0f172a;       /* Navy blue */
+  --color-dark-200: #1e293b;       /* Dark slate */
+  --color-dark-300: #334155;       /* Medium slate */
+  
+  /* Gradient Definitions */
+  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --gradient-light: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  
+  /* Rest of your theme config remains the same */
   --font-mona-sans: "Mona Sans", sans-serif;
-
   --bg-pattern: url("/pattern.png");
 }
 
 :root {
+  /* Light Theme */
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: var(--color-light-100);
+  --foreground: var(--color-dark-100);
+  --card: var(--color-light-200);
+  --card-foreground: var(--color-dark-100);
+  --primary: var(--color-primary-300);
+  --primary-foreground: var(--color-light-100);
+  --secondary: var(--color-light-200);
+  --muted: var(--color-light-400);
+  --accent: var(--color-primary-100);
+  --destructive: var(--color-destructive-200);
+  --border: var(--color-light-400);
+  --input: var(--color-light-200);
+  --ring: var(--color-primary-300);
+  
+  /* Chart colors */
+  --chart-1: #6366f1;  /* Indigo */
+  --chart-2: #10b981;  /* Emerald */
+  --chart-3: #f59e0b;  /* Amber */
+  --chart-4: #8b5cf6;  /* Violet */
+  --chart-5: #ec4899;  /* Pink */
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: var(--light-100);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Dark Theme */
+  --background: var(--color-dark-100);
+  --foreground: var(--color-light-100);
+  --card: var(--color-dark-200);
+  --card-foreground: var(--color-light-100);
+  --primary: var(--color-primary-200);
+  --primary-foreground: var(--color-dark-100);
+  --secondary: var(--color-dark-200);
+  --muted: var(--color-light-600);
+  --accent: var(--color-primary-300);
+  --destructive: var(--color-destructive-200);
+  --border: var(--color-light-800);
+  --input: var(--color-dark-300);
+  --ring: var(--color-primary-200);
+  
+  /* Dark chart colors */
+  --chart-1: #818cf8;  /* Light indigo */
+  --chart-2: #34d399;  /* Light emerald */
+  --chart-3: #fbbf24;  /* Light amber */
+  --chart-4: #a78bfa;  /* Light violet */
+  --chart-5: #f472b6;  /* Light pink */
 }
 
 @theme inline {
