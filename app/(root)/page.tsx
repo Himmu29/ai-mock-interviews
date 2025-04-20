@@ -25,9 +25,16 @@ const page = async () => {
             <p className='text-lg'>
                 Practice on real interview questiona nd get instant feedback
             </p>
-            <Button asChild className='btn-primary max-sm:w-full'>
+            <div className='flex gap-4 max-sm:flex-col max-sm:w-full'>
+              <Button asChild className='btn-primary'>
                 <Link href="/interview">Start an Interview</Link>
-            </Button>
+              </Button>
+
+              <Button asChild className='btn-secondary'>
+                <Link href="/interview/resume">Interview with Resume</Link>
+              </Button>
+            </div>
+
           </div>
           <Image src="/robot.png" alt='robo-dude' width={400} height={400} className='max-sm:hidden'/>
       </section>
