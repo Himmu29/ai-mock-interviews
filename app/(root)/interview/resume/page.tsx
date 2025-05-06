@@ -26,11 +26,29 @@ export default function CreateInterviewPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Handle generate question logic, including resumeFile
-    console.log({ jobPosition, jobDescription, duration, selectedTypes, resumeFile });
+  
+    const formData = {
+      jobPosition,
+      jobDescription,
+      duration,
+      selectedTypes,
+    };
+  
+    const response = await fetch('/api/generate-questions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+  
+    const data = await response.json();
+  
+    if (data.questions) {
+      router.push(`/interview/questions?data=${encodeURIComponent(JSON.stringify(data.questions))}`);
+    }
   };
+  
 
   return (
     <section className="max-w-xl mx-auto p-6">
