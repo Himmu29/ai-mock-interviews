@@ -9,7 +9,7 @@ export default function CreateInterviewPage() {
   const router = useRouter();
   const [jobPosition, setJobPosition] = useState('');
   const [jobDescription, setJobDescription] = useState('');
-  const [duration, setDuration] = useState('');
+  const [numQuestions, setNumQuestions] = useState<number | ''>('');
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const typesList = ['Technical', 'Behavioral', 'Experience', 'Problem Solving', 'Leadership'];
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
@@ -28,27 +28,35 @@ export default function CreateInterviewPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
+    if (numQuestions === '' || numQuestions < 1) {
+      alert('Please enter a valid number of questions');
+      return;
+    }
+
     const formData = {
       jobPosition,
       jobDescription,
-      duration,
+      numQuestions,
       selectedTypes,
     };
-  
+
     const response = await fetch('/api/generate-questions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     });
-  
+
     const data = await response.json();
-  
+
     if (data.questions) {
-      router.push(`/interview/questions?data=${encodeURIComponent(JSON.stringify(data.questions))}`);
+      router.push(
+        `/interview/questions?data=${encodeURIComponent(
+          JSON.stringify(data.questions)
+        )}`
+      );
     }
   };
-  
 
   return (
     <section className="max-w-xl mx-auto p-6">
@@ -92,6 +100,22 @@ export default function CreateInterviewPage() {
         </div>
 
         <div>
+          <label htmlFor="num-questions" className="block mb-1 font-medium">
+            Number of Questions
+          </label>
+          <input
+            id="num-questions"
+            type="number"
+            min={1}
+            value={numQuestions}
+            onChange={e => setNumQuestions(e.target.valueAsNumber || '')}
+            placeholder="Enter number of questions"
+            className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            required
+          />
+        </div>
+
+        <div>
           <label htmlFor="resume-upload" className="block mb-1 font-medium">
             Upload Resume (PDF)
           </label>
@@ -114,27 +138,6 @@ export default function CreateInterviewPage() {
         </div>
 
         <div>
-          <label htmlFor="duration" className="block mb-1 font-medium">
-            Interview Duration
-          </label>
-          <select
-            id="duration"
-            value={duration}
-            onChange={e => setDuration(e.target.value)}
-            className="bg-black w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            required
-          >
-            <option value="" disabled>
-              Select duration
-            </option>
-            <option value="15">15 Min</option>
-            <option value="30">30 Min</option>
-            <option value="45">45 Min</option>
-            <option value="60">60 Min</option>
-          </select>
-        </div>
-
-        <div>
           <p className="block mb-1 font-medium">Interview Type</p>
           <div className="flex flex-wrap gap-2">
             {typesList.map(type => (
@@ -154,17 +157,23 @@ export default function CreateInterviewPage() {
           </div>
         </div>
 
-        <div className="text-right">
-          <Button
-            type="submit"
-            disabled={
-              !jobPosition || !jobDescription || !duration || selectedTypes.length === 0 || !resumeFile
-            }
-            className="btn-primary"
-          >
-            Generate Question →
-          </Button>
-        </div>
+        <div className="flex justify-end space-x-4">
+  <Button
+    type="submit"
+    disabled={
+      !jobPosition || !jobDescription || numQuestions === '' || selectedTypes.length === 0
+    }
+    className="btn-primary"
+  >
+    Generate Questions →
+  </Button>
+  <Button
+    type="button"
+    className="btn-secondary"
+  >
+    Start Interview
+  </Button>
+</div>
       </form>
     </section>
   );
