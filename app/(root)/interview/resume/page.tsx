@@ -1,4 +1,3 @@
-// app/interview/new/page.tsx
 'use client';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -11,12 +10,18 @@ export default function CreateInterviewPage() {
   const [jobDescription, setJobDescription] = useState('');
   const [numQuestions, setNumQuestions] = useState<number | ''>('');
   const [resumeFile, setResumeFile] = useState<File | null>(null);
-  const typesList = ['Technical', 'Behavioral', 'Experience', 'Problem Solving', 'Leadership'];
+  const typesList = [
+    'Technical',
+    'Behavioral',
+    'Experience',
+    'Problem Solving',
+    'Leadership',
+  ];
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
   const toggleType = (type: string) => {
-    setSelectedTypes(prev =>
-      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    setSelectedTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     );
   };
 
@@ -26,11 +31,10 @@ export default function CreateInterviewPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (numQuestions === '' || numQuestions < 1) {
-      alert('Please enter a valid number of questions');
+  // Shared question-generation logic
+  const generateAndRedirect = async (target: 'preview' | 'live') => {
+    if (!jobPosition || !jobDescription || numQuestions === '' || selectedTypes.length === 0) {
+      alert('Please complete all fields before proceeding.');
       return;
     }
 
@@ -41,21 +45,31 @@ export default function CreateInterviewPage() {
       selectedTypes,
     };
 
-    const response = await fetch('/api/generate-questions', {
+    const res = await fetch('/api/generate-questions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     });
+    const { questions } = await res.json();
 
-    const data = await response.json();
-
-    if (data.questions) {
-      router.push(
-        `/interview/questions?data=${encodeURIComponent(
-          JSON.stringify(data.questions)
-        )}`
-      );
+    if (!questions) {
+      alert('Failed to generate questions. Please try again.');
+      return;
     }
+
+    const payload =
+      target === 'preview'
+        ? encodeURIComponent(JSON.stringify(questions))
+        : encodeURIComponent(
+            JSON.stringify({
+              role: jobPosition,
+              type: selectedTypes.join(', '),
+              questions,
+            })
+          );
+
+    const path = target === 'preview' ? '/interview/questions' : '/interview/live';
+    router.push(`${path}?data=${payload}`);
   };
 
   return (
@@ -69,7 +83,8 @@ export default function CreateInterviewPage() {
       </div>
 
       {/* Form */}
-      <form className="space-y-6" onSubmit={handleSubmit}>
+      <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); generateAndRedirect('preview'); }}>
+        {/* Job Position */}
         <div>
           <label htmlFor="job-position" className="block mb-1 font-medium">
             Job Position
@@ -78,13 +93,14 @@ export default function CreateInterviewPage() {
             id="job-position"
             type="text"
             value={jobPosition}
-            onChange={e => setJobPosition(e.target.value)}
+            onChange={(e) => setJobPosition(e.target.value)}
             placeholder="Enter job position"
             className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
             required
           />
         </div>
 
+        {/* Job Description */}
         <div>
           <label htmlFor="job-description" className="block mb-1 font-medium">
             Job Description
@@ -92,13 +108,14 @@ export default function CreateInterviewPage() {
           <textarea
             id="job-description"
             value={jobDescription}
-            onChange={e => setJobDescription(e.target.value)}
+            onChange={(e) => setJobDescription(e.target.value)}
             placeholder="Enter job description"
             className="w-full border rounded-lg px-4 py-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
             required
           />
         </div>
 
+        {/* Number of Questions */}
         <div>
           <label htmlFor="num-questions" className="block mb-1 font-medium">
             Number of Questions
@@ -108,13 +125,14 @@ export default function CreateInterviewPage() {
             type="number"
             min={1}
             value={numQuestions}
-            onChange={e => setNumQuestions(e.target.valueAsNumber || '')}
+            onChange={(e) => setNumQuestions(e.target.valueAsNumber || '')}
             placeholder="Enter number of questions"
             className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
             required
           />
         </div>
 
+        {/* Resume Upload */}
         <div>
           <label htmlFor="resume-upload" className="block mb-1 font-medium">
             Upload Resume (PDF)
@@ -137,10 +155,11 @@ export default function CreateInterviewPage() {
           </label>
         </div>
 
+        {/* Interview Type Buttons */}
         <div>
           <p className="block mb-1 font-medium">Interview Type</p>
           <div className="flex flex-wrap gap-2">
-            {typesList.map(type => (
+            {typesList.map((type) => (
               <button
                 key={type}
                 type="button"
@@ -157,23 +176,25 @@ export default function CreateInterviewPage() {
           </div>
         </div>
 
+        {/* Action Buttons */}
         <div className="flex justify-end space-x-4">
-  <Button
-    type="submit"
-    disabled={
-      !jobPosition || !jobDescription || numQuestions === '' || selectedTypes.length === 0
-    }
-    className="btn-primary"
-  >
-    Generate Questions →
-  </Button>
-  <Button
-    type="button"
-    className="btn-secondary"
-  >
-    Start Interview
-  </Button>
-</div>
+          <Button
+            type="submit"
+            disabled={
+              !jobPosition || !jobDescription || numQuestions === '' || !selectedTypes.length
+            }
+            className="btn-primary"
+          >
+            Generate Questions →
+          </Button>
+          <Button
+            type="button"
+            onClick={() => generateAndRedirect('live')}
+            className="btn-secondary"
+          >
+            Start Interview
+          </Button>
+        </div>
       </form>
     </section>
   );

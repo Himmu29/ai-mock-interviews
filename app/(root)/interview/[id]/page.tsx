@@ -6,6 +6,7 @@ import { getRandomInterviewCover } from '@/lib/utils';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import React from 'react'
+import InterviewRecorder from '@/components/InterviewRecorder';
 
 const page = async ({params}: RouteParams) => {
     const {id} = await params;
@@ -16,6 +17,7 @@ const page = async ({params}: RouteParams) => {
 
   return (
     <>
+    <InterviewRecorder/>
         <div className='flex flex-row gap-4 justify-between'>
             <div className='flex flex-row gap-4 items-center max-sm:flex-col'>
                 <div className='flex flex-row gap-4 items-center'>
