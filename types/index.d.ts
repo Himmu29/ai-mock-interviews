@@ -97,3 +97,50 @@ interface InterviewFormProps {
 interface TechIconProps {
   techStack: string[];
 }
+
+interface Interview {
+  id: string
+  userId: string
+  role: string
+  level: string
+  techStack: string[]
+  type: string
+  questions: any[]
+  coverImageUrl?: string
+  createdAt: string
+}
+
+interface Feedback {
+  id: string
+  interviewId: string
+  userId: string
+  totalScore: number
+  categoryScores: {
+    name: string
+    score: number
+    comment: string
+  }[]
+  strengths: string[]
+  areasForImprovement: string[]
+  finalAssessment: string
+  createdAt: string
+}
+
+interface GetLatestInterviewsParams {
+  userId: string
+  limit?: number
+}
+
+interface GetFeedbackByInterviewIdParams {
+  interviewId: string
+  userId: string
+}
+
+interface CreateFeedbackParams {
+  interviewId: string
+  userId: string
+  transcript: {
+    role: string
+    content: string
+  }[]
+}

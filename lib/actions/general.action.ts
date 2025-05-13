@@ -112,4 +112,3 @@ export async function getFeedbackByInterviewId(params: GetFeedbackByInterviewIdP
         id: feedbackDoc.id, ...feedbackDoc.data()
     } as Feedback;
 }
- 
