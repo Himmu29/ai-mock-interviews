@@ -7,7 +7,7 @@ import Link from 'next/link';
 import DisplayTechIcons from './DisplayTechIcons';
 import { getFeedbackByInterviewId } from '@/lib/actions/general.action';
 
-const InterviewCard = async ({ id , userId , role , type , techstack , createdAt }:InterviewCardProps) => {
+const InterviewCard = async ({ id , userId , role , type , techstack , createdAt , skill }:InterviewCardProps) => {
     const feedback = userId && id 
     ? await getFeedbackByInterviewId({interviewId:id , userId}) : null;
     const normalizedType = /mix/gi.test(type) ? 'Mixed' :type; 
@@ -29,8 +29,10 @@ const InterviewCard = async ({ id , userId , role , type , techstack , createdAt
                         height={96} 
                         className='rounded-full object-cover border-4 border-light-200 shadow-sm size-[96px]'
                     />
-                    <h3 className='mt-5 capitalize text-xl font-semibold text-center'>
+                    <h3 className='mt-5 capitalize text-xl font-semibold text-center text-white-500'>
                         {role} Interview
+
+                        
                     </h3>
                 </div>
                 
@@ -50,8 +52,10 @@ const InterviewCard = async ({ id , userId , role , type , techstack , createdAt
                 </p>
             </div>
             
-            <div className='flex justify-between items-center mt-8'>
+            <div className='flex justify-between items-center mt-8 gap-2'>
                 <DisplayTechIcons techstack={techstack} />
+
+                <Button className='btn-primary px-6 py-3 rounded-lg' > <span>Check Skill</span> {skill}</Button>
 
                 <Button className='btn-primary px-6 py-3 rounded-lg hover:scale-105 transition-transform'>
                     <Link 
