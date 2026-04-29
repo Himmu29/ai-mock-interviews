@@ -55,7 +55,7 @@ const InterviewCard = async ({ id , userId , role , type , techstack , createdAt
             <div className='flex justify-between items-center mt-8 gap-2'>
                 <DisplayTechIcons techstack={techstack} />
 
-                <Button className='btn-primary px-6 py-3 rounded-lg' > <span>Check Skill</span> {skill}</Button>
+                {/* <Button className='btn-primary px-6 py-3 rounded-lg' > <span>Check Skill</span> {skill}</Button> */}
 
                 <Button className='btn-primary px-6 py-3 rounded-lg hover:scale-105 transition-transform'>
                     <Link 
